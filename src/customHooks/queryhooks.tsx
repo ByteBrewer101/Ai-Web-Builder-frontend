@@ -1,31 +1,46 @@
 import { beUrl } from "@/constants";
-
 import { useEffect, useState } from "react";
 import axios from "axios";
-
 export function useCallTech(inputPrompt: string) {
+
+  
   const [data, setData] = useState({});
-  const [isloading, setIsLoding] = useState(true);
-  const [err, setErr] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [err, setErr] = useState<unknown>();
 
   useEffect(() => {
     (async function () {
       try {
-        const response = await axios.post(`${beUrl}/technology`, {
-          prompt:inputPrompt,
+        // First API call to /technology
+        const techResponse = await axios.post(`${beUrl}/technology`, {
+          prompt: inputPrompt,
         });
-        if (response.data) {
-          setData(response.data);
-         
-        }
+        const { prompts } = techResponse.data;
+
+    
+        const messages = [...prompts,inputPrompt].map((content)=>({
+
+          role:"user",
+          content
+        }))
+
+        // setData(messages)
+
+        const stepsResponse = await axios.post(`${beUrl}/chat`, { messages });
+        setData(stepsResponse.data); 
       } catch (e) {
-        //@ts-ignore
         setErr(e);
       } finally {
-        setIsLoding(false);
+        setIsLoading(false);
       }
     })();
   }, [inputPrompt]);
 
-  return { data, isloading, err };
+  if(isLoading){
+    console.log("loading...");
+  }if(!isLoading){
+    console.log(data);
+  }
+
+  return { data, isLoading, err };
 }

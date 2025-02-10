@@ -1,12 +1,10 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "./ui/input";
 import { Sparkles, Send } from "lucide-react";
+import { Step } from "@/types";
 
 
 
-interface Step {
-  description: string;
-}
 
 interface StepsPanelProps {
   steps: Step[];
@@ -23,7 +21,7 @@ export function StepsPanel({ steps }: StepsPanelProps) {
               <div className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center">
                 {index + 1}
               </div>
-              <p className="text-sm">{step.description}</p>
+              <p className="text-sm">{step.title}</p>
             </div>
           ))}
         </div>

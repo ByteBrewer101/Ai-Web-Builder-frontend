@@ -1,46 +1,47 @@
 import { beUrl } from "@/constants";
-import { useEffect, useState } from "react";
 import axios from "axios";
-export function useCallTech(inputPrompt: string) {
 
-  
-  const [data, setData] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-  const [err, setErr] = useState<unknown>();
+import { ParseXml } from "@/functions/XMlParser";
+import { useSetRecoilState } from "recoil";
+import { stepsState } from "@/states";
+import { useEffect, useState } from "react";
 
-  useEffect(() => {
-    (async function () {
-      try {
-        // First API call to /technology
-        const techResponse = await axios.post(`${beUrl}/technology`, {
-          prompt: inputPrompt,
-        });
-        const { prompts } = techResponse.data;
+export function useCallTech(prompt: string) {
+  const setSteps = useSetRecoilState(stepsState);
+  const [isloading, setIsLoading] = useState(true);
 
-    
-        const messages = [...prompts,inputPrompt].map((content)=>({
+  async function init(prompt: string) {
+    if (isloading) {
+      console.log("loading...");
+    }
+    const response = await axios.post(`${beUrl}/technology`, {
+      prompt,
+    });
+//@ts-expect-error
+    const { prompts, uiPrompts } = response.data;
 
-          role:"user",
-          content
-        }))
+    setSteps(ParseXml(uiPrompts[0]));
 
-        // setData(messages)
+  const messages = [...prompts, prompt].map((content) => ({
+    role: "user",
+    content,
+  }));
 
-        const stepsResponse = await axios.post(`${beUrl}/chat`, { messages });
-        setData(stepsResponse.data); 
-      } catch (e) {
-        setErr(e);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-  }, [inputPrompt]);
+    const response2 = await axios.post(`${beUrl}/chat`, {
+      messages,
+    });
 
-  if(isLoading){
-    console.log("loading...");
-  }if(!isLoading){
+    const data = response2.data;
+
     console.log(data);
+    const AiSteps = ParseXml(data);
+
+    setSteps((prev) => [...prev, ...AiSteps]);
+
+    setIsLoading(false);
   }
 
-  return { data, isLoading, err };
+  useEffect(() => {
+    init(prompt);
+  }, []);
 }

@@ -23,4 +23,19 @@ export interface Step{
     path?:string
 }
 
+export interface FileType {
+  name: string;
+  path: string;
+  content?: string;
+  isFolder: boolean;
+  children?: FileType[];
+}
+
+export interface FileExplorerProps {
+  files: FileType[];
+  selectedFile?: FileType;
+  onSelectFile: (file: FileType) => void;
+  loading:boolean
+}
+
 

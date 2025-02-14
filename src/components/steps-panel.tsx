@@ -7,10 +7,10 @@ import { Step } from "@/types";
 
 
 interface StepsPanelProps {
-  steps: Step[];
+  steps: Step[]
 }
 
-export function StepsPanel({ steps }: StepsPanelProps) {
+export function StepsPanel({ steps}: StepsPanelProps) {
   return (
     <Card className="h-full py-4 px-2 flex flex-col justify-between">
       <h2 className="text-xl font-semibold mb-4">AI Steps</h2>
@@ -19,7 +19,7 @@ export function StepsPanel({ steps }: StepsPanelProps) {
           {steps.map((step, index) => (
             <div key={index} className="flex  items-start gap-3">
               <div className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center">
-                {index + 1}
+                {index + 1 }
               </div>
               <p className="text-sm">{step.title}</p>
             </div>

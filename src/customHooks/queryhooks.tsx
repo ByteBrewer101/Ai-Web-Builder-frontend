@@ -6,6 +6,7 @@ import { useSetRecoilState } from "recoil";
 import { stepsState } from "@/states";
 import { useEffect, useState } from "react";
 
+
 export function useCallTech(prompt: string) {
   const setSteps = useSetRecoilState(stepsState);
   const [isloading, setIsLoading] = useState(true);
@@ -44,4 +45,6 @@ export function useCallTech(prompt: string) {
   useEffect(() => {
     init(prompt);
   }, []);
+
+  return {isloading}
 }

@@ -133,23 +133,23 @@ export default function ProductPage() {
         console.log("Files to mount:", result);
 
         // Mount files
-        await webcontainer.mount(result);
+        await webcontainer?.mount(result);
         console.log("Files mounted successfully");
 
-        // Install dependencies
+        
         console.log("Starting npm install...");
-        const installProcess = await webcontainer.spawn("npm", ["install"]);
+        const installProcess = await webcontainer?.spawn("npm", ["install"]);
 
-        // Stream the output
+        
         const installExitCode = await new Promise((resolve) => {
-          installProcess.output.pipeTo(
+          installProcess?.output.pipeTo(
             new WritableStream({
               write(data) {
                 console.log("npm install output:", data);
               },
             })
           );
-          installProcess.exit.then(resolve);
+          installProcess?.exit.then(resolve);
         });
 
         if (installExitCode !== 0) {
@@ -161,16 +161,16 @@ export default function ProductPage() {
 
         // Start dev server
         console.log("Starting dev server...");
-        const devProcess = await webcontainer.spawn("npm", ["run", "dev"]);
+        const devProcess = await webcontainer?.spawn("npm", ["run", "dev"]);
 
         // Listen for server-ready event
-        webcontainer.on("server-ready", (port, url) => {
+        webcontainer?.on("server-ready", (port, url) => {
           console.log("Server is ready at:", url);
           setUrl(url);
         });
 
         // Optional: Stream dev server output
-        devProcess.output.pipeTo(
+        devProcess?.output.pipeTo(
           new WritableStream({
             write(data) {
               console.log("Dev server output:", data);
@@ -183,7 +183,7 @@ export default function ProductPage() {
     }
 
     handler();
-  }, [files, webcontainer]); // Keep both dependencies
+  }, [files, webcontainer]); 
 
   return (
     <div className="h-screen pt-10">
@@ -206,7 +206,7 @@ export default function ProductPage() {
         <ResizableHandle />
 
         <ResizablePanel defaultSize={50}>
-          <CodeEditor content={selectedFile?.content} url={url} />
+          <CodeEditor content={selectedFile?.content}  url={url} />
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

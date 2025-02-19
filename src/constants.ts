@@ -1,1 +1,1 @@
-export const beUrl = "http://localhost:5000"
+export const beUrl = "https://ai-webbuilder-backend.onrender.com"

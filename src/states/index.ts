@@ -1,5 +1,6 @@
 import { atom } from "recoil";
 import { FileType, Step } from "@/types";
+import { WebContainer } from "@webcontainer/api";
 
 const filesDefault: FileType[] = [
   {
@@ -43,3 +44,7 @@ export const filesState = atom<FileType[]>({
   default:filesDefault
 })
 
+export const webContainerInstance = atom<WebContainer>({
+  key:"webcontainerInstance",
+  default:undefined
+})

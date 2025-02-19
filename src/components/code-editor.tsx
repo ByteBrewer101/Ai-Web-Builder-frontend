@@ -4,9 +4,10 @@ import { useState } from "react";
 interface CodeEditorProps {
   content?: string;
   url?: string;
+  onChange?: (content: string) => void;
 }
 
-export function CodeEditor({ content, url }: CodeEditorProps) {
+export function CodeEditor({ content, url, onChange }: CodeEditorProps) {
   const [view, setView] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -26,8 +27,8 @@ export function CodeEditor({ content, url }: CodeEditorProps) {
             }}
             className={`px-4 py-2 rounded-t-lg ${
               !view
-                ? "bg-blue-950 text-white"
-                : " text-black bg-gray-200 hover:bg-gray-300"
+                ? "bg-gray-200  text-black"
+                : " text-white bg-blue-950 hover:text-white hover:bg-blue-900"
             }`}
           >
             Code
@@ -36,8 +37,8 @@ export function CodeEditor({ content, url }: CodeEditorProps) {
             onClick={() => setView(true)}
             className={`px-4 py-2 rounded-t-lg ${
               view
-                ? "bg-blue-950 text-white"
-                : " text-black bg-gray-200 hover:bg-gray-300"
+                ? "bg-gray-200 text-black"
+                : " text-white bg-blue-950  hover:text-white hover:bg-blue-900"
             }`}
           >
             Preview
@@ -52,6 +53,7 @@ export function CodeEditor({ content, url }: CodeEditorProps) {
             defaultLanguage="javascript"
             theme={"vs-dark"}
             value={content ?? "// Select a file to view"}
+            onChange={(value) => onChange?.(value || "")}
             options={{
               minimap: { enabled: false },
               fontSize: 14,
@@ -61,29 +63,25 @@ export function CodeEditor({ content, url }: CodeEditorProps) {
             }}
           />
         ) : (
-          <div className="h-full   rounded-lg flex items-center justify-center">
+          <div className="h-full rounded-lg flex items-center justify-center">
             {!url && (
               <p className="text-gray-500 text-lg">
-                Preview content will be displayed here...
-             
+                WebContainer is booting up..
               </p>
             )}
             {url && (
               <div className="relative w-full h-full">
-             
                 {loading && (
                   <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-black">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
                   </div>
                 )}
-
-               
                 <iframe
                   src={url}
                   className={`w-full h-full ${
                     loading ? "invisible" : "visible"
-                  }`} 
-                  onLoad={handler} 
+                  }`}
+                  onLoad={handler}
                 />
               </div>
             )}

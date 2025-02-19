@@ -1,7 +1,8 @@
-import { Card } from "@/components/ui/card";
+
 import { Input } from "./ui/input";
 import { Sparkles, Send } from "lucide-react";
 import { Step } from "@/types";
+import { toast } from "sonner";
 
 
 
@@ -12,7 +13,7 @@ interface StepsPanelProps {
 
 export function StepsPanel({ steps}: StepsPanelProps) {
   return (
-    <Card className="h-full py-4 px-2 flex flex-col justify-between">
+    <div className="  h-full py-4 px-2 flex flex-col dark:bg-gray-900 justify-between">
       <h2 className="text-xl font-semibold mb-4">AI Steps</h2>
       <div className="overflow-y-scroll py-2 px-2 " style={ {scrollbarWidth: "none"}} >
         <div className="space-y-4">
@@ -26,10 +27,12 @@ export function StepsPanel({ steps}: StepsPanelProps) {
           ))}
         </div>
       </div>
-      <div className="relative w-full">
+      <div className="relative w-full mt-4 "  >
         <Input
           className="w-full pl-10 pr-12"
           placeholder="Type your message..."
+          onClick={()=>toast.info("Reprompting is still in development")}
+          
         />
 
         <Sparkles className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
@@ -41,6 +44,6 @@ export function StepsPanel({ steps}: StepsPanelProps) {
           <Send className="h-5 w-5" />
         </button>
       </div>
-    </Card>
+    </div>
   );
 }

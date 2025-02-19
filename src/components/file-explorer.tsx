@@ -1,4 +1,4 @@
-import React from "react";
+
 import { File, Folder } from "lucide-react";
 import {
   Accordion,

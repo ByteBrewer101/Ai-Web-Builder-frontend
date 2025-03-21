@@ -188,6 +188,7 @@ export default function ProductPage() {
         console.log("Files mounted successfully");
 
         console.log("Starting npm install...");
+      await webcontainer?.spawn("npm", ["install", "react-router-dom"]);
         const installProcess = await webcontainer?.spawn("npm", ["install"]);
 
         const installExitCode = await new Promise((resolve) => {
